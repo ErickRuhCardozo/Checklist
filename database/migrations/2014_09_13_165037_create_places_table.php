@@ -8,19 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('places', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('password');
-            $table->unsignedTinyInteger('type');
-            $table->unsignedTinyInteger('work_period');
+            $table->string('name');
+            $table->string('qrcode');
             $table->foreignId('unity_id')->constrained('unities')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->rememberToken();
+            $table->unique(['name', 'unity_id']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('places');
     }
 };

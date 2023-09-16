@@ -1,0 +1,34 @@
+.col-auto { width: 260px; }
+
+.menu-list {
+    position: fixed;
+    top: 37px;
+    right: 0;
+    height: calc(100vh - 37px);
+    width: 260px;
+    background: var(--bs-gray-800);
+    padding: 1rem;
+}
+
+.menu-list a {
+    text-decoration: none;;
+    padding: 0.2em 0.2em 0.2em 1.5em;
+    margin-bottom: 0.1em;
+    color: var(--bs-body-color);
+    border-radius: 0.5em;
+    display: block;
+}
+
+.menu-list a:hover { background: var(--bs-blue); }
+
+@media (max-width: 575.98px) {
+    .col-auto { width: 0; }
+    .menu-list {
+        position: relative;
+        top: 0;
+        height: auto;
+        background: none;
+        width: 100%;
+        padding: 0;
+    }
+}
