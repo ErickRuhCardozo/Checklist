@@ -1,7 +1,7 @@
-<x-app title="Editar Usuário" :back="route('users.show', $user->id)">
+<x-app title="Editar Usuário" :back="route('admin.users.show', $user->id)">
     <x-slot name="rightBodySection"> @include ('components.partials.admin.menu') </x-slot>
 
-    <form action="{{ route('users.update', $user->id) }}" method="post">
+    <form action="{{ route('admin.users.update', $user->id) }}" method="post">
         @csrf
         @method('PATCH')
 
@@ -55,7 +55,7 @@
 
 
     <div class="actions">
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('users.edit', $user->id) }}" style="width: 42px; height: 42px;">
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.users.edit', $user->id) }}" style="width: 42px; height: 42px;">
             <i class="bi bi-pencil-fill align-middle fs-5"></i>
         </a>
         <a class="btn btn-danger rounded-circle p-1" href="javascript:showDeleteDialog()" style="width: 42px; height: 42px;">
@@ -63,6 +63,6 @@
         </a>
     </div>
 
-    <x-delete-dialog title="Excluir Usuário" message="Deseja excluir esse Usuário?" :route="route('users.destroy', $user->id)"/>
+    <x-delete-dialog title="Excluir Usuário" message="Deseja excluir esse Usuário?" :route="route('admin.users.destroy', $user->id)"/>
 </x-app>
 

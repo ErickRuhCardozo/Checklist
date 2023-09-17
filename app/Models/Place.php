@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Place extends Model
 {
-    public $timestamps = false;
-
     protected $fillable = [
         'name',
         'qrcode',

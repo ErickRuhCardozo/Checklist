@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('password');
             $table->unsignedTinyInteger('type');
             $table->unsignedTinyInteger('work_period');
             $table->foreignId('unity_id')->constrained('unities')->cascadeOnUpdate()->cascadeOnDelete();
             $table->rememberToken();
+            $table->unique(['name', 'unity_id']);
         });
     }
 

@@ -1,7 +1,7 @@
-<x-app title="Editar Unidade" :back="route('unities.show', $unity->id)">
+<x-app title="Editar Unidade" :back="route('admin.unities.show', $unity->id)">
     <x-slot name="rightBodySection"> @include ('components.partials.admin.menu') </x-slot>
 
-    <form action="{{ route('unities.update', $unity->id) }}" method="post">
+    <form action="{{ route('admin.unities.update', $unity->id) }}" method="post">
         @csrf
         @method('PATCH')
 

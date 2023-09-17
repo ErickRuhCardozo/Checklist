@@ -11,7 +11,7 @@
         }
     </script>
 @endpush
-<x-app title="Ambiente" :back="request()->get('back') ?? route('places.index')">
+<x-app title="Ambiente" :back="request()->get('back') ?? route('admin.places.index')">
     <x-slot name="rightBodySection"> @include('components.partials.admin.menu') </x-slot>
 
     <x-input-field
@@ -39,22 +39,42 @@
         :readonly="true"
         :value="$place->unity->name" />
 
+    <h5 class="mt-3 text-center">Usuários que podem checar esse Ambiente:</h5>
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            @foreach ($allowedUserTypes as $userType)
+                <button type="button" class="btn btn-primary">{{ $userType->label() }}</button>
+            @endforeach
+        </div>
+    </div>
+
     <h5 class="mt-3 mb-2">Tarefas:</h5>
     @if ($place->tasks->isEmpty())
         <p class="lead text-center">Nenhuma Tarefa Cadastrada Nesse Ambiente</p>
     @else
-        <div class="list-group">
-            @foreach ($place->tasks as $task)
-                <button class="list-group-item list-group-item-action text-center" onclick="location.assign('{{ route('tasks.show', $task->id) }}?back={{ route('places.show', $place->id) }}')">{{ $task->title }}</button>
-            @endforeach
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="fw-bold">
+                    <th>Título</th>
+                    <th>Período</th>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach ($place->tasks as $task)
+                        <tr onclick="location.assign('{{ route('admin.tasks.show', $task->id) }}?back={{ route('admin.places.show', $place->id) }}')">
+                            <td>{{ $task->title }}</td>
+                            <td>{{ $task->period->label() }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     @endif
 
     <div class="actions">
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('places.edit', $place->id) }}" style="width: 42px; height: 42px;">
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.places.edit', $place->id) }}" style="width: 42px; height: 42px;">
             <i class="bi bi-pencil-fill align-middle fs-5"></i>
         </a>
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('tasks.create') }}?place={{ $place->id }}&back={{ route('places.show', $place->id) }}" style="width: 42px; height: 42px;">
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.tasks.create') }}?place={{ $place->id }}&back={{ route('admin.places.show', $place->id) }}" style="width: 42px; height: 42px;">
             <i class="bi bi-clipboard-plus-fill align-middle fs-5"></i>
         </a>
         <a class="btn btn-danger rounded-circle p-1" href="javascript:showDeleteDialog()" style="width: 42px; height: 42px;">
@@ -62,6 +82,6 @@
         </a>
     </div>
 
-    <x-delete-dialog title="Excluir Ambiente" message="Deseja excluir esse Ambiente?" :route="route('places.destroy', $place->id)" />
+    <x-delete-dialog title="Excluir Ambiente" message="Deseja excluir esse Ambiente?" :route="route('admin.places.destroy', $place->id)" />
 </x-app>
 

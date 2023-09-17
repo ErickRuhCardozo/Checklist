@@ -1,6 +1,6 @@
-<x-app title="Cadastrar Tarefa" :back="request()->get('back') ?? route('tasks.index')">
+<x-app title="Cadastrar Tarefa" :back="request()->get('back') ?? route('admin.tasks.index')">
     <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'tasks.create']) </x-slot>
-    <form action="{{ route('tasks.store') }}" method="post">
+    <form action="{{ route('admin.tasks.store') }}" method="post">
         @csrf
 
         <x-input-field

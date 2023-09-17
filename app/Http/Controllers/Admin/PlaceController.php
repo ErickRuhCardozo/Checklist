@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlaceRequest;
 use App\Models\Place;
+use App\Models\PlaceAllowedUsers;
 use App\Models\Unity;
+use App\Models\UserType;
 use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
@@ -27,14 +30,26 @@ class PlaceController extends Controller
             Session::flash('back', Request::get('back'));
 
         return View::make('admin.places.create', [
-            'unityOptions' => Unity::options()
+            'unityOptions' => Unity::options(),
+            'userTypeOptions' => UserType::options(),
         ]);
     }
 
     public function store(PlaceRequest $request)
     {
+        $data = $request->validated();
+
         try {
-            Place::create($request->validated());
+            DB::transaction(function() use (&$data) {
+                $place = Place::create($data);
+
+                foreach ($data['allowedUserTypes'] as $userType) {
+                    PlaceAllowedUsers::create([
+                        'place_id' => $place->id,
+                        'user_type' => $userType,
+                    ]);
+                }
+            });
         } catch (UniqueConstraintViolationException $err) {
             return Redirect::back()->withErrors(['name' => 'Já existe um Ambiente com esse nome nesta Unidade'])->withInput();
         }
@@ -42,7 +57,7 @@ class PlaceController extends Controller
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('places.index');
+        return Redirect::route('admin.places.index');
     }
 
     public function show(Place $place)
@@ -50,28 +65,48 @@ class PlaceController extends Controller
         if (Request::has('back'))
             Session::flash('back', Request::get('back'));
 
+        $allowedUserTypes = PlaceAllowedUsers::where('place_id', $place->id)->get(['user_type'])->map(fn($m) => $m->user_type);
+
         return View::make('admin.places.show', [
-            'place' => $place
+            'place' => $place,
+            'allowedUserTypes' => $allowedUserTypes,
         ]);
     }
 
     public function edit(Place $place)
     {
+        $allowedUserTypes = PlaceAllowedUsers::where('place_id', $place->id)->get(['user_type'])->map(fn($m) => $m->user_type->value);
+
         return View::make('admin.places.edit', [
             'place' => $place,
-            'unityOptions' => Unity::options()
+            'unityOptions' => Unity::options(),
+            'userTypeOptions' => UserType::options(),
+            'allowedUserTypes' => $allowedUserTypes->toArray(),
         ]);
     }
 
     public function update(PlaceRequest $request, Place $place)
     {
+        $data = $request->validated();
+
         try {
-            $place->update($request->validated());
+            DB::transaction(function() use (&$place, &$data) {
+                $place->update($data);
+                PlaceAllowedUsers::where('place_id', $place->id)->delete();
+
+                foreach ($data['allowedUserTypes'] as $userType) {
+                    PlaceAllowedUsers::create([
+                        'place_id' => $place->id,
+                        'user_type' => $userType,
+                    ]);
+                }
+            });
+
         } catch (UniqueConstraintViolationException $err) {
             return Redirect::back()->withErrors(['name' => 'Já existe um Ambiente com esse nome nessa Unidade'])->withInput();
         }
 
-        return Redirect::route('places.show', $place->id);
+        return Redirect::route('admin.places.show', $place->id);
     }
 
     public function destroy(Place $place)
@@ -81,6 +116,6 @@ class PlaceController extends Controller
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('places.index');
+        return Redirect::route('admin.places.index');
     }
 }

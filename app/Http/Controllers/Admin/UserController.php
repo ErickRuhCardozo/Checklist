@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         return View::make('admin.users.index', [
-            'users' => User::all()
+            'users' => User::simplePaginate()
         ]);
     }
 
@@ -42,7 +42,7 @@ class UserController extends Controller
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('users.index');
+        return Redirect::route('admin.users.index');
     }
 
     public function show(User $user)

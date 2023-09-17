@@ -19,6 +19,7 @@ class User extends Authenticatable
         'type',
         'work_period',
         'unity_id',
+        'current_checklist_id'
     ];
 
     protected $hidden = [
@@ -40,5 +41,23 @@ class User extends Authenticatable
     public static function options()
     {
         return self::all()->map(fn($user) => ['value' => $user->id, 'label' => $user->name])->toArray();
+    }
+
+    public function checklists()
+    {
+        return $this->hasMany(Checklist::class);
+    }
+
+    public function currentChecklist()
+    {
+        return $this->hasOne(Checklist::class, 'id', 'current_checklist_id');
+    }
+
+    public function allowedPlacesCount()
+    {
+        return PlaceAllowedUsers::where('user_type', $this->type->value)
+                                ->get()
+                                ->where(fn($allowed) => $allowed->place->unity->id === $this->unity->id)
+                                ->count();
     }
 }

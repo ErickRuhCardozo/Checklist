@@ -12,7 +12,7 @@
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($tasks as $task)
-                        <tr onclick="location.assign('{{ route('tasks.show', $task->id) }}')">
+                        <tr onclick="location.assign('{{ route('admin.tasks.show', $task->id) }}')">
                             <td>{{ $task->title }}</td>
                             <td>{{ $task->period->label() }}</td>
                             <td>{{ $task->place->name }} ({{ $task->place->unity->name }})</td>
@@ -24,7 +24,7 @@
     @endif
 
     <div class="actions">
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('tasks.create') }}" style="width: 42px; height: 42px;">
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.tasks.create') }}" style="width: 42px; height: 42px;">
             <i class="bi bi-plus-lg align-middle fs-5"></i>
         </a>
     </div>

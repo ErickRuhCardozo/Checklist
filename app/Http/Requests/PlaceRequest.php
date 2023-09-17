@@ -16,7 +16,8 @@ class PlaceRequest extends FormRequest
         return [
             'name' => ['required', 'min:5', 'max:30'],
             'qrcode' => ['required', 'max:30'],
-            'unity_id' => ['required', 'numeric']
+            'unity_id' => ['required', 'numeric'],
+            'allowedUserTypes' => ['required', 'array'],
         ];
     }
 }

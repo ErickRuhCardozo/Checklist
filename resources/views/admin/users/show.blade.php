@@ -1,4 +1,4 @@
-<x-app title="Usuário" :back="request()->get('back') ?? route('users.index')">
+<x-app title="Usuário" :back="request()->get('back') ?? route('admin.users.index')">
     <x-slot name="rightBodySection"> @include ('components.partials.admin.menu') </x-slot>
 
      <x-input-field
@@ -30,7 +30,7 @@
         :readonly="true" />
 
     <div class="actions">
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('users.edit', $user->id) }}" style="width: 42px; height: 42px;">
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.users.edit', $user->id) }}" style="width: 42px; height: 42px;">
             <i class="bi bi-pencil-fill align-middle fs-5"></i>
         </a>
         <a class="btn btn-danger rounded-circle p-1" href="javascript:showDeleteDialog()" style="width: 42px; height: 42px;">
@@ -38,6 +38,6 @@
         </a>
     </div>
 
-    <x-delete-dialog title="Excluir Usuário" message="Deseja excluir esse Usuário?" :route="route('users.destroy', $user->id)"/>
+    <x-delete-dialog title="Excluir Usuário" message="Deseja excluir esse Usuário?" :route="route('admin.users.destroy', $user->id)"/>
 </x-app>
 

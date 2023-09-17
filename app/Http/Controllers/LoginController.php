@@ -20,14 +20,14 @@ class LoginController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function authenticate(Request $request)
     {
         $data = $request->validate([
-            'user' => ['required', 'numeric'],
+            'user_id' => ['required', 'numeric'],
             'password' => ['required']
         ]);
 
-        $user = User::find($data['user']);
+        $user = User::find($data['user_id']);
 
         if (!Hash::check($data['password'], $user->password))
             return Redirect::back()->withErrors(['password' => 'Senha Incorreta'])->withInput();
@@ -41,7 +41,7 @@ class LoginController extends Controller
     {
         return match ($user->type) {
             UserType::ADMIN => Redirect::route('admin.home'),
-            default => 'TODO'
+            default => Redirect::route('employee.checklists.index')
         };
     }
 }

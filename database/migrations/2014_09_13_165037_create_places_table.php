@@ -11,8 +11,9 @@ return new class extends Migration
         Schema::create('places', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('qrcode');
+            $table->string('qrcode')->unique();
             $table->foreignId('unity_id')->constrained('unities')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->timestamps();
             $table->unique(['name', 'unity_id']);
         });
     }

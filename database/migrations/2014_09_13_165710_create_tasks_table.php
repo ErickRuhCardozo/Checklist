@@ -12,7 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->unsignedTinyInteger('period');
-            $table->foreignId('place_id')->constrained('places')->cascadeOnUpdate()->cascadeOnUpdate();
+            $table->foreignId('place_id')->constrained('places')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->timestamps();
             $table->unique(['title', 'place_id', 'period']);
         });
     }

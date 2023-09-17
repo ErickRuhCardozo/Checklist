@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UnitySeeder::class,
             UserSeeder::class,
+            PlaceSeeder::class,
         ]);
     }
 }

@@ -1,4 +1,4 @@
 <x-app title="The Title">
-    <h1>Hello!</h1>
+    <x-slot name="rightBodySection"> @include('components.partials.admin.menu') </x-slot>
 </x-app>
 

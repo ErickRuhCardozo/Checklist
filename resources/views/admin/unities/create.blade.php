@@ -1,7 +1,7 @@
-<x-app title="Cadastrar Unidade" :back="route('unities.index')">
+<x-app title="Cadastrar Unidade" :back="route('admin.unities.index')">
     <x-slot name="rightBodySection"> @include ('components.partials.admin.menu', ['selected' => 'unities.create']) </x-slot>
 
-    <form action="{{ route('unities.store') }}" method="post">
+    <form action="{{ route('admin.unities.store') }}" method="post">
         @csrf
 
          <x-input-field

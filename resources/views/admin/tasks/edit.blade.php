@@ -1,6 +1,6 @@
-<x-app title="Editar Tarefa" :back="route('tasks.show', $task->id)">
+<x-app title="Editar Tarefa" :back="route('admin.tasks.show', $task->id)">
     <x-slot name="rightBodySection"> @include('components.partials.admin.menu') </x-slot>
-    <form action="{{ route('tasks.update', $task->id) }}" method="post">
+    <form action="{{ route('admin.tasks.update', $task->id) }}" method="post">
         @csrf
         @method('PATCH')
 

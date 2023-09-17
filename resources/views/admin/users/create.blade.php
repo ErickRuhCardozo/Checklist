@@ -1,7 +1,7 @@
-<x-app title="Cadastrar Usuário" :back="request()->get('back') ?? route('users.index')">
+<x-app title="Cadastrar Usuário" :back="request()->get('back') ?? route('admin.users.index')">
     <x-slot name="rightBodySection"> @include ('components.partials.admin.menu', ['selected' => 'users.create']) </x-slot>
 
-    <form action="{{ route('users.store') }}" method="post">
+    <form action="{{ route('admin.users.store') }}" method="post">
         @csrf
 
          <x-input-field
