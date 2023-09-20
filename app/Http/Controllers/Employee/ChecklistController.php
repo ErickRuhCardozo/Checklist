@@ -14,8 +14,10 @@ class ChecklistController extends Controller
 {
     public function index()
     {
+        $checklists = Auth::user()->checklists()->orderBy('created_at', 'desc')->get();
+
         return View::make('employee.checklists.index', [
-            'checklists' => Auth::user()->checklists()->get(),
+            'checklists' => $checklists,
         ]);
     }
 
@@ -34,7 +36,11 @@ class ChecklistController extends Controller
         $allowedPlaces = PlaceAllowedUsers::where('user_type', $checklist->user->type->value)
                                           ->get()
                                           ->map(fn($allowedPlace) => $allowedPlace->place)
-                                          ->where(fn($place) => $place->unity->id === $checklist->user->unity_id);
+                                          ->where(fn($place) => $place->unity_id === $checklist->user->unity_id);
+
+        if ($checklist->is_done)
+            $allowedPlaces = $allowedPlaces->where(fn($place) => $place->created_at->lte($checklist->created_at));
+
         $notScannedPlaces = $allowedPlaces->diff($checklist->checkedPlaces());
 
         return View::make('employee.checklists.show', [

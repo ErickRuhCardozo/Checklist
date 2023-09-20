@@ -9,6 +9,7 @@ use App\Models\PlaceAllowedUsers;
 use App\Models\Scan;
 use App\Models\ScanTask;
 use App\Models\Task;
+use App\Models\UserType;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,35 +24,22 @@ class ScanController extends Controller
         $place = null;
         $tasks = [];
 
-        // TODO: Needs Refactoring. Create separated methods to do each check.
         if ($request->has('qrcode')) {
-            // Try to find a Place with the qrcode.
-            // If not found or the place belongs to a Unity different that the current user's Unity,
-            // redirect back with errors
-            $place = Place::where('qrcode', $request->get('qrcode'))->first();
+            $qrcode = $request->get('qrcode');
+            $user = Auth::user();
 
-            if ($place === null) {
-                return Redirect::back()->withErrors(['error' => 'Nenhum local com esse QRCode encontrado. Tente Novamente.']);
-            } else if ($place->unity->id !== Auth::user()->unity->id) {
-                return Redirect::back()->withErrors(['error' => 'Esse ambiente não pertence à sua Unidade.']);
-            }
+            if (!$this->isValidPlace($qrcode, $user->id, $error))
+                return Redirect::back()->withErrors(['error' => $error]);
 
-            // If the Place was found and it belongs to the same Unity of the current User,
-            // check if this place was already checked in the current Checklist.
-            // If so, redirect to the scan's info.
-            // TODO: Clean up this mess
-            if (Scan::where('checklist_id', Auth::user()->current_checklist_id)->where('place_id', $place->id)->count() > 0)
-                return Redirect::route('employee.scans.show', Scan::where('checklist_id', Auth::user()->current_checklist_id)->where('place_id', $place->id)->first()->id);
+            if ($this->isPlaceAlreadyScanned($place, $user->current_checklist_id, $scan))
+               return Redirect::route('employee.scans.show', $scan->id);
 
-            // If found, check if the current user is allowed to check in the Place. If not, return back with errors
-            $allowedUsers = PlaceAllowedUsers::where('place_id', $place->id)->get()->map(fn($model) => $model->user_type->value)->toArray();
-
-            if (!in_array(Auth::user()->type->value, $allowedUsers))
+            if (!$this->isUserAllowedToCheckPlace($place, $user->type))
                 return Redirect::back()->withErrors(['error' => 'Você não está autorizado a checar esse Ambiente.']);
 
-            // If the Place was found and the current user is allowed to check,
-            // load the Place's Tasks with the same period as the work_period of the current User
-            $tasks = Task::where('place_id', $place->id)->where('period', Auth::user()->work_period)->get();
+            $tasks = Task::where('place_id', $place->id)
+                         ->where('period', $user->work_period)
+                         ->get();
         }
 
         return View::make('employee.scans.create', [
@@ -133,5 +121,70 @@ class ScanController extends Controller
         });
 
         return Redirect::route('employee.scans.show', $scan->id);
+    }
+
+    /**
+     * Check if the $qrcode belongs to a valid Place and if the Place belongs to the same Unity identified by $unityId.
+     * @param string $qrcode The QR Code
+     * @param int $unityId The id of the current users's Unity
+     * @param string $error The error if the Place was not found
+     * @return bool true if a Place with $qrcode was found and it belongs to the same Unity as the User's.
+     *              false otherwise.
+     */
+    private function isValidPlace(string $qrcode, int $unityId, string &$error): bool
+    {
+        $success = false;
+        $place = Place::where('qrcode', $qrcode)->first();
+
+        if ($place === null) {
+            $error = 'Nenhum local com esse QRCode encontrado. Tente Novamente.';
+        }
+        else if ($place->unity_id !== $unityId) {
+            $error = 'Esse ambiente não pertence à sua Unidade.';
+        }
+        else {
+            $success = true;
+        }
+
+        return $success;
+    }
+
+    /**
+     * Check if $place was already scanned in the Checklist identified by $checklistId.
+     * @param Place $place The Place to check for scans.
+     * @param int $checklistId The id of the Checklist to search for scans for $place.
+     * @param Scan $scan Will be set to the Scan made in Place if Place was already scanned.
+     * @return bool true if $place was already scanned, false otherwise.
+     */
+    private function isPlaceAlreadyScanned(Place $place, int $checklistId, Scan &$scan): bool
+    {
+        $scanCount = Scan::where('checklist_id', $checklistId)
+                         ->where('place_id', $place->id)
+                         ->count();
+
+        if ($scanCount > 0) {
+            $scan = Scan::where('checklist_id', $checklistId)
+                        ->where('place_id', $place->id)
+                        ->first();
+             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the user with $userType is allowed to check $place.
+     * @param Place $place The Place.
+     * @param App\Models\UserType $userType The user's type.
+     * @return bool true if $userType is allowed to check $place, false otherwise.
+     */
+    private function isUserAllowedToCheckPlace(Place $place, UserType $userType): bool
+    {
+        $allowedUsers = PlaceAllowedUsers::where('place_id', $place->id)
+                                         ->get()
+                                         ->map(fn($model) => $model->user_type->value)
+                                         ->toArray();
+
+        return in_array($userType->value, $allowedUsers);
     }
 }

@@ -1,0 +1,60 @@
+:root {
+    --bs-body-color: white !important;
+}
+
+body {
+    user-select: none;
+}
+
+.actions {
+    position: fixed;
+    bottom: 0;
+    right: var(--menu-width);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.actions a i.bi,
+.actions span.material-symbols-outlined {
+    line-height: 1.8rem;
+}
+
+.table {
+    table-layout: fixed;
+    white-space: nowrap;
+}
+
+.table thead {
+    text-align: center;
+    font-weight: bold;
+}
+
+.table tbody {
+    text-align: center;
+}
+
+.table-hover tbody td {
+    cursor: pointer;
+}
+
+@media (max-width: 576px) {
+    .actions {
+        right: 0;
+    }
+
+    .actions a i.bi,
+    .actions span.material-symbols-outlined {
+        line-height: 2.3rem;
+    }
+
+    .table {
+        table-layout: auto;
+    }
+}
+

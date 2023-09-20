@@ -7,7 +7,6 @@ use App\Models\PlaceAllowedUsers;
 use App\Models\Unity;
 use App\Models\UserType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
 
 class PlaceSeeder extends Seeder
 {

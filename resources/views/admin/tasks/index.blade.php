@@ -6,9 +6,9 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="fw-bold">
-                    <th>Título</th>
-                    <th>Turno</th>
-                    <th>Ambiente</th>
+                    <th>@sortablelink('title', 'Título')</th>
+                    <th>@sortablelink('period', 'Turno')</th>
+                    <th>@sortablelink('place.name', 'Ambiente')</th>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($tasks as $task)

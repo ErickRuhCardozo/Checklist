@@ -1,47 +1,10 @@
 @props(['selected' => ''])
 @push('styles')
-    <style>
-        .col-auto { width: 260px; }
-        .list-unstyled li { margin-bottom: 1em; }
-
-        .menu-list {
-            position: fixed;
-            top: 37px;
-            right: 0;
-            height: calc(100vh - 37px);
-            width: 260px;
-            background: var(--bs-gray-800);
-            padding: 1rem;
-        }
-
-        .menu-list a {
-            text-decoration: none;;
-            padding: 0.2em 0.2em 0.2em 1.5em;
-            margin-bottom: 0.1em;
-            color: var(--bs-body-color);
-            border-radius: 0.5em;
-            display: block;
-        }
-
-        .menu-list a:hover { background: var(--bs-blue); }
-
-        @media (max-width: 575.98px) {
-            .col-auto { width: 0; }
-            .menu-list {
-                position: relative;
-                top: 0;
-                height: auto;
-                background: none;
-                width: 100%;
-                padding: 0;
-            }
-        }
-    </style>
-
+    <link rel="stylesheet" href="{{ asset('assets/css/user-menu.css') }}">
 @endpush
 
 <x-slot name="rightHeaderSection">
-    <button class="btn d-md-none p-0 fs-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
+    <button class="btn d-md-none p-0 fs-5 ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
         <i class="bi bi-list"></i>
     </button>
 </x-slot>
@@ -70,6 +33,18 @@
                     <a href="{{ route('employee.checklists.index') }}" @if ($selected == 'checklists.index') style="background: var(--bs-blue);" @endif>
                         <i class="bi bi-clipboard2-pulse-fill fs-5 me-1"></i>
                         <span>Seus Checklists</span>
+                    </a>
+                </ul>
+            </li>
+            <li>
+                <strong>
+                    <i class="bi bi-gear-fill fs-5 me-2"></i>
+                    <span>Configurações</span>
+                </strong>
+                <ul class="list-unstyled">
+                    <a href="{{ route('employee.settings.index') }}" @if ($selected == 'settings.index') style="background: var(--bs-blue);" @endif>
+                        <i class="bi bi-gear-fill fs-5 me-1"></i>
+                        <span>Suas Configurações</span>
                     </a>
                 </ul>
             </li>

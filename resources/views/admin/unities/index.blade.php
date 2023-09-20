@@ -4,12 +4,12 @@
     @if ($unities->isEmpty())
         <p class="lead text-center">Nenhuma Unidade Cadastrada</p>
     @else
-        <div class="table-responsive">
+        <div class="table-responsive mb-2">
             <table class="table table-hover">
-                <thead class="fw-bold">
-                    <th>Nome</th>
-                    <th>Ambientes</th>
-                    <th>Usuários</th>
+                <thead>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('places', 'Ambientes')</th>
+                    <th>@sortablelink('users', 'Usuários')</th>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($unities as $unity)
@@ -29,5 +29,7 @@
             <i class="bi bi-plus-lg align-middle fs-5"></i>
         </a>
     </div>
+
+    {{ $unities->links() }}
 </x-app>
 

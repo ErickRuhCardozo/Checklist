@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Unity;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Http\Request;
@@ -15,8 +16,12 @@ class LoginController extends Controller
 {
     public function index()
     {
+        if (Auth::check())
+            return $this->redirectUser(Auth::user());
+
         return View::make('login.index', [
             'userOptions' => User::options(),
+            'unities' => Unity::all(),
         ]);
     }
 
@@ -37,10 +42,18 @@ class LoginController extends Controller
         return $this->redirectUser($user);
     }
 
+    public function logout()
+    {
+        Auth::logout();
+        Session::invalidate();
+        return Redirect::route('login');
+    }
+
     private function redirectUser(User $user)
     {
         return match ($user->type) {
-            UserType::ADMIN => Redirect::route('admin.home'),
+            UserType::ADMIN,
+            UserType::COORDINATOR => Redirect::route('admin.checklists.index'),
             default => Redirect::route('employee.checklists.index')
         };
     }

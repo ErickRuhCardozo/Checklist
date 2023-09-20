@@ -1,42 +1,6 @@
 @props(['selected' => ''])
 @push('styles')
-    <style>
-        .list-unstyled li { margin-bottom: 1em; }
-        .col-auto { width: 260px; }
-
-        .menu-list {
-            position: fixed;
-            top: 37px;
-            right: 0;
-            height: calc(100vh - 37px);
-            width: 260px;
-            background: var(--bs-gray-800);
-            padding: 1rem;
-        }
-
-        .menu-list a {
-            text-decoration: none;;
-            padding: 0.2em 0.2em 0.2em 1.5em;
-            margin-bottom: 0.1em;
-            color: var(--bs-body-color);
-            border-radius: 0.5em;
-            display: block;
-        }
-
-        .menu-list a:hover { background: var(--bs-blue); }
-
-        @media (max-width: 575.98px) {
-            .col-auto { width: 0; }
-            .menu-list {
-                position: relative;
-                top: 0;
-                height: auto;
-                background: none;
-                width: 100%;
-                padding: 0;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/user-menu.css') }}">
 @endpush
 
 <x-slot name="rightHeaderSection">
@@ -68,22 +32,24 @@
                     </a>
                 </ul>
             </li>
-            <li>
-                <strong>
-                    <i class="bi bi-buildings-fill fs-5 me-2"></i>
-                    <span>Unidades</span>
-                </strong>
-                <ul class="list-unstyled">
-                    <a href="{{ route('admin.unities.index') }}" @if ($selected == 'unities.index') style="background: var(--bs-blue);" @endif>
-                        <i class="bi bi-building-fill-check fs-5 me-1"></i>
-                        <span>Unidades Cadastradas</span>
-                    </a>
-                    <a href="{{ route('admin.unities.create') }}" @if ($selected == 'unities.create') style="background: var(--bs-blue);" @endif>
-                        <i class="bi bi-building-fill-add fs-5 me-1"></i>
-                        <span>Cadastrar Unidade</span>
-                    </a>
-                </ul>
-            </li>
+            @can('create', App\Models\Unity::class)
+                <li>
+                    <strong>
+                        <i class="bi bi-buildings-fill fs-5 me-2"></i>
+                        <span>Unidades</span>
+                    </strong>
+                    <ul class="list-unstyled">
+                        <a href="{{ route('admin.unities.index') }}" @if ($selected == 'unities.index') style="background: var(--bs-blue);" @endif>
+                            <i class="bi bi-building-fill-check fs-5 me-1"></i>
+                            <span>Unidades Cadastradas</span>
+                        </a>
+                        <a href="{{ route('admin.unities.create') }}" @if ($selected == 'unities.create') style="background: var(--bs-blue);" @endif>
+                            <i class="bi bi-building-fill-add fs-5 me-1"></i>
+                            <span>Cadastrar Unidade</span>
+                        </a>
+                    </ul>
+                </li>
+            @endcan
             <li>
                 <strong>
                     <i class="bi bi-map-fill fs-5 me-2"></i>
@@ -91,11 +57,11 @@
                 </strong>
                 <ul class="list-unstyled">
                     <a href="{{ route('admin.places.index') }}" @if ($selected == 'places.index') style="background: var(--bs-blue);" @endif>
-                        <i class="bi bi-pin-map-fill fs-5 me-1"></i>
+                        <span class="material-symbols-outlined">where_to_vote</span>
                         <span>Ambientes Cadastrados</span>
                     </a>
                     <a href="{{ route('admin.places.create') }}" @if ($selected == 'places.create') style="background: var(--bs-blue);" @endif>
-                        <i class="bi bi-bookmark-plus-fill fs-5 me-1"></i>
+                        <span class="material-symbols-outlined">add_location</span>
                         <span>Cadastrar Ambiente</span>
                     </a>
                 </ul>
@@ -128,7 +94,18 @@
                     </a>
                 </ul>
             </li>
-
+            <li>
+                <strong>
+                    <i class="bi bi-gear-fill fs-5 me-2"></i>
+                    <span>Configurações</span>
+                </strong>
+                <ul class="list-unstyled">
+                    <a href="{{ route('admin.settings.index') }}" @if ($selected == 'settings.index') style="background: var(--bs-blue);" @endif>
+                        <i class="bi bi-gear-fill fs-5 me-1"></i>
+                        <span>Suas Configurações</span>
+                    </a>
+                </ul>
+            </li>
         </ul>
      </div>
 </div>

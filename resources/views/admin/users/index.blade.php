@@ -2,14 +2,14 @@
     <x-slot name="rightBodySection"> @include ('components.partials.admin.menu', ['selected' => 'users.index']) </x-slot>
 
     @if ($users->isEmpty())
-        <p class="lead text-center">Nenhum Usuário Cadastrado</p>
+        <p class="lead text-center mb-2">Nenhum Usuário Cadastrado</p>
     @else
-        <div class="table-responsive">
+        <div class="table-responsive mb-2">
             <table class="table table-hover">
                 <thead>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Unidade</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('type', 'Tipo')</th>
+                    <th>@sortablelink('unity.name', 'Unidade')</th>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($users as $user)

@@ -10,6 +10,7 @@
             icon="buildings-fill"
             name="name"
             :focus="true"
+            :value="old('name')"
             :error="$errors->get('name')[0] ?? ''" />
 
         <input class="btn btn-success w-100 mt-4" type="submit" value="Cadastrar">

@@ -7,10 +7,12 @@ use App\Models\Unity;
 use App\Models\UserType;
 use App\Models\WorkPeriod;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
@@ -18,26 +20,51 @@ class UserController extends Controller
 {
     public function index()
     {
+        $users = User::sortable();
+
+        if (Auth::user()->type == UserType::COORDINATOR) {
+            $users = $users->where('unity_id', Auth::user()->unity_id)
+                           ->where('id', '!=', Auth::id());
+        }
+
         return View::make('admin.users.index', [
-            'users' => User::simplePaginate()
+            'users' => $users->simplePaginate(10),
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        if (Request::has('back'))
+        if ($request->has('back'))
             Session::flash('back', Request::get('back'));
 
+        $unityOptions = Unity::options();
+        $userTypeOptions = UserType::options();
+
+        if (Auth::user()->type === UserType::COORDINATOR) {
+            $unityOptions = array_filter($unityOptions, fn($opt) => $opt['value'] === Auth::user()->unity_id);
+            $userTypeOptions = array_filter(
+                $userTypeOptions,
+                fn($opt) => !in_array(
+                    $opt['value'],
+                    [UserType::ADMIN->value, UserType::COORDINATOR->value]
+                )
+            );
+        }
+
         return View::make('admin.users.create', [
-            'userTypeOptions' => UserType::options(),
+            'userTypeOptions' => $userTypeOptions,
             'workPeriodOptions' => WorkPeriod::options(),
-            'unityOptions' => Unity::options(),
+            'unityOptions' => $unityOptions,
         ]);
     }
 
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validated());
+        try {
+            User::create($request->validated());
+        } catch (UniqueConstraintViolationException) {
+            return Redirect::back()->withErrors(['name' => 'Já existe um funcionário com mesmo nome na mesma Unidade'])->withInput();
+        }
 
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
@@ -45,9 +72,9 @@ class UserController extends Controller
         return Redirect::route('admin.users.index');
     }
 
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        if (Request::has('back'))
+        if ($request->has('back'))
             Session::flash('back', Request::get('back'));
 
         return View::make('admin.users.show', [
@@ -74,7 +101,7 @@ class UserController extends Controller
             unset($data['password']);
 
         $user->update($data);
-        return Redirect::route('users.show', $user->id);
+        return Redirect::route('admin.users.show', $user->id);
     }
 
     public function destroy(User $user)
@@ -84,6 +111,6 @@ class UserController extends Controller
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('users.index');
+        return Redirect::route('admin.users.index');
     }
 }

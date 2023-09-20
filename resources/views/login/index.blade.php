@@ -20,5 +20,11 @@
 
         <input class="btn btn-success w-100 mt-4" type="submit" value="Entrar">
     </form>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/checklist/sw.js');
+        }
+    </script>
 </x-app>
 

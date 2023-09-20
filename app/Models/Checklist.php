@@ -3,9 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Checklist extends Model
 {
+    use Sortable;
+
+    public $sortable = [
+        'created_at',
+        'updated_at',
+    ];
+
     protected $fillable = [
         'user_id',
         'is_done',

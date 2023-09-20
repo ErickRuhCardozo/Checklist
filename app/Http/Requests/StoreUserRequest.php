@@ -14,8 +14,8 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:3', 'max:30', 'unique:users,name'],
-            'password' => ['required', 'min:4', 'max:10'],
+            'name' => ['required', 'min:3', 'max:30'],
+            'password' => ['required', 'min:4'],
             'type' => ['required', 'numeric'],
             'work_period' => ['required', 'numeric'],
             'unity_id' => ['required', 'numeric'],

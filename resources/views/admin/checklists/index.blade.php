@@ -1,5 +1,12 @@
 <x-app title="Checklists">
-    <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'checklists.index']) </x-slot>
+     <x-slot name="leftHeaderSection">
+        <a class="btn btn-sm btn-danger" href="{{ route('logout') }}">
+            <i class="bi bi-arrow-bar-left me-1"></i>
+            <span>Sair</span>
+        </a>
+    </x-slot>
+
+   <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'checklists.index']) </x-slot>
 
     @if ($checklists->isEmpty())
         <p class="lead text-center">Nenhum Checklist Feito Ainda</p>
@@ -7,14 +14,14 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="fw-bold">
-                    <th>Usuário</th>
-                    <th>Data</th>
+                    <th>@sortablelink('user.name', 'Usuário')</th>
+                    <th>@sortablelink('created_at', 'Data')</th>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($checklists as $checklist)
                         <tr onclick="location.assign('{{ route('admin.checklists.show', $checklist->id) }}')">
                             <td>{{ $checklist->user->name }}</td>
-                            <td>{{ $checklist->created_at->translatedFormat('l, d/m/Y') }}</td>
+                            <td>{{ Str::title($checklist->created_at->translatedFormat('l, d/m/Y')) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -4,11 +4,11 @@
     @if ($places->isEmpty())
         <p class="lead text-center">Nenhum Ambiente Cadastrado</p>
     @else
-        <div class="table-responsive">
+        <div class="table-responsive mb-2">
             <table class="table table-hover">
                 <thead class="fw-bold">
-                    <th>Nome</th>
-                    <th>Unidade</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('unity.name', 'Unidade')</th>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($places as $place)
@@ -27,5 +27,7 @@
             <i class="bi bi-plus-lg align-middle fs-5"></i>
         </a>
     </div>
+
+    {{ $places->links() }}
 </x-app>
 

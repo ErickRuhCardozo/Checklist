@@ -9,6 +9,7 @@ use App\Models\PlaceAllowedUsers;
 use App\Models\Unity;
 use App\Models\UserType;
 use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -19,19 +20,39 @@ class PlaceController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->type === UserType::ADMIN) {
+            $places = Place::sortable();
+        }
+        else if (Auth::user()->type === UserType::COORDINATOR) {
+            $places = Place::sortable()->where('unity_id', Auth::user()->unity_id);
+        }
+
         return View::make('admin.places.index', [
-            'places' => Place::all()
+            'places' => $places->simplePaginate(10),
         ]);
     }
 
     public function create()
     {
+        $unityOptions = Unity::options();
+        $userTypeOptions = UserType::options();
+        $userTypeOptions = array_filter(
+            $userTypeOptions,
+            fn($opt) => !in_array(
+                $opt['value'],
+                [UserType::ADMIN->value, UserType::COORDINATOR->value]
+            )
+        );
+
         if (Request::has('back'))
             Session::flash('back', Request::get('back'));
 
+        if (Auth::user()->type === UserType::COORDINATOR)
+            $unityOptions = array_filter($unityOptions, fn($opt) => $opt['value'] === Auth::user()->unity_id);
+
         return View::make('admin.places.create', [
-            'unityOptions' => Unity::options(),
-            'userTypeOptions' => UserType::options(),
+            'unityOptions' => $unityOptions,
+            'userTypeOptions' => $userTypeOptions,
         ]);
     }
 
@@ -76,11 +97,13 @@ class PlaceController extends Controller
     public function edit(Place $place)
     {
         $allowedUserTypes = PlaceAllowedUsers::where('place_id', $place->id)->get(['user_type'])->map(fn($m) => $m->user_type->value);
+        $userTypeOptions = UserType::options();
+        $userTypeOptions = array_filter($userTypeOptions, fn($opt) => !in_array($opt['value'], [UserType::ADMIN->value, UserType::COORDINATOR->value]));
 
         return View::make('admin.places.edit', [
             'place' => $place,
             'unityOptions' => Unity::options(),
-            'userTypeOptions' => UserType::options(),
+            'userTypeOptions' => $userTypeOptions,
             'allowedUserTypes' => $allowedUserTypes->toArray(),
         ]);
     }

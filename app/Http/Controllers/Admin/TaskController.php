@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use App\Models\Unity;
+use App\Models\UserType;
 use App\Models\WorkPeriod;
 use Illuminate\Database\UniqueConstraintViolationException;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
@@ -18,8 +20,15 @@ class TaskController extends Controller
 {
     public function index()
     {
+        $tasks = Task::sortable();
+
+        if (Auth::user()->type === UserType::COORDINATOR)
+            $tasks = $tasks->join('places', 'tasks.place_id', '=', 'places.id')
+                           ->where('places.unity_id', Auth::user()->unity_id)
+                           ->select('tasks.*');
+
         return View::make('admin.tasks.index', [
-            'tasks' => Task::all()
+            'tasks' => $tasks->simplePaginate(10)
         ]);
     }
 
@@ -28,9 +37,14 @@ class TaskController extends Controller
         if (FacadesRequest::has('back'))
             Session::flash('back', FacadesRequest::get('back'));
 
+        if (Auth::user()->type === UserType::ADMIN)
+            $unities = Unity::all();
+        else if (Auth::user()->type === UserType::COORDINATOR)
+            $unities = Unity::where('id', Auth::user()->unity_id)->get();
+
         return View::make('admin.tasks.create', [
             'workPeriodOptions' => WorkPeriod::options(),
-            'unities' => Unity::all(),
+            'unities' => $unities,
         ]);
     }
 
@@ -38,14 +52,14 @@ class TaskController extends Controller
     {
         try {
             Task::create($request->validated());
-        } catch (UniqueConstraintViolationException $err) {
+        } catch (UniqueConstraintViolationException) {
             return Redirect::back()->withErrors(['title' => 'Já existe uma tarefa com esse nome, no mesmo turno neste Ambiente'])->withInput();
         }
 
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('tasks.index');
+        return Redirect::route('admin.tasks.index');
     }
 
     public function show(Task $task)
@@ -63,9 +77,14 @@ class TaskController extends Controller
         if (FacadesRequest::has('back'))
             Session::flash('back', FacadesRequest::get('back'));
 
+        if (Auth::user()->type === UserType::ADMIN)
+            $unities = Unity::all();
+        else if (Auth::user()->type === UserType::COORDINATOR)
+            $unities = Unity::where('id', Auth::user()->unity_id)->get();
+
         return View::make('admin.tasks.edit', [
-            'task' => $task,            'workPeriodOptions' => WorkPeriod::options(),
-            'unities' => Unity::all(),
+            'task' => $task,
+            'unities' => $unities,
             'workPeriodOptions' => WorkPeriod::options(),
         ]);
     }
@@ -74,14 +93,14 @@ class TaskController extends Controller
     {
         try {
             $task->update($request->validated());
-        } catch (UniqueConstraintViolationException $err) {
+        } catch (UniqueConstraintViolationException) {
             return Redirect::back()->withErrors(['title' => 'Já existe uma tarefa com esse nome, no mesmo turno neste Ambiente'])->withInput();
         }
 
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('tasks.show', $task->id);
+        return Redirect::route('admin.tasks.show', $task->id);
     }
 
     public function destroy(Task $task)
@@ -91,6 +110,6 @@ class TaskController extends Controller
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
 
-        return Redirect::route('tasks.index');
+        return Redirect::route('admin.tasks.index');
     }
 }

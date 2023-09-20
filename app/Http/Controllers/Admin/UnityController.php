@@ -15,7 +15,7 @@ class UnityController extends Controller
     public function index()
     {
         return View::make('admin.unities.index', [
-            'unities' => Unity::all()
+            'unities' => Unity::sortable()->simplePaginate(10)
         ]);
     }
 
@@ -27,7 +27,7 @@ class UnityController extends Controller
     public function store(StoreUnityRequest $request)
     {
         Unity::create($request->validated());
-        return Redirect::route('unities.index');
+        return Redirect::route('admin.unities.index');
     }
 
     public function show(Unity $unity)
@@ -52,12 +52,12 @@ class UnityController extends Controller
             return Redirect::back()->withErrors(['name' => 'Nome já em uso, escolha outro.'])->withInput();
         }
 
-        return Redirect::route('unities.show', $unity->id);
+        return Redirect::route('admin.unities.show', $unity->id);
     }
 
     public function destroy(Unity $unity)
     {
         $unity->delete();
-        return Redirect::route('unities.index');
+        return Redirect::route('admin.unities.index');
     }
 }

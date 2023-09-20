@@ -19,7 +19,7 @@
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($unity->users as $user)
-                        <tr onclick="location.assign('{{ route('admin.users.show', $user->id) }}?back={{ route('unities.show', $unity->id) }}')">
+                        <tr onclick="location.assign('{{ route('admin.users.show', $user->id) }}?back={{ route('admin.unities.show', $unity->id) }}')">
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->type->label() }}</td>
                         </tr>
@@ -41,7 +41,7 @@
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($unity->places as $place)
-                        <tr onclick="location.assign('{{ route('admin.places.show', $place->id) }}?back={{ route('unities.show', $unity->id) }}')">
+                        <tr onclick="location.assign('{{ route('admin.places.show', $place->id) }}?back={{ route('admin.unities.show', $unity->id) }}')">
                             <td>{{ $place->name }}</td>
                             <td>{{ $place->tasks()->count() }}</td>
                         </tr>
@@ -55,11 +55,11 @@
         <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.unities.edit', $unity->id) }}" style="width: 42px; height: 42px;">
             <i class="bi bi-pencil-fill align-middle fs-5"></i>
         </a>
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.users.create') }}?unity={{ $unity->id }}&back={{ route('unities.show', $unity->id) }}" style="width: 42px; height: 42px;">
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.users.create') }}?unity={{ $unity->id }}&back={{ route('admin.unities.show', $unity->id) }}" style="width: 42px; height: 42px;">
             <i class="bi bi-person-plus-fill align-middle fs-5"></i>
         </a>
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.places.create') }}?unity={{ $unity->id }}&back={{ route('unities.show', $unity->id) }}" style="width: 42px; height: 42px;">
-            <i class="bi bi-clipboard2-plus-fill align-middle fs-5"></i>
+        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.places.create') }}?unity={{ $unity->id }}&back={{ route('admin.unities.show', $unity->id) }}" style="width: 42px; height: 42px;">
+            <span class="material-symbols-outlined">add_location_alt</span>
         </a>
         <a class="btn btn-danger rounded-circle p-1" href="javascript:showDeleteDialog()" style="width: 42px; height: 42px;">
             <i class="bi bi-trash-fill align-middle fs-5"></i>

@@ -12,7 +12,12 @@ class IsAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        abort_if(!Auth::check() || Auth::user()->type != UserType::ADMIN, Response::HTTP_FORBIDDEN, 'Você não é um usuário Administrador');
+        abort_if(
+            !Auth::check() || !in_array(Auth::user()->type, [UserType::ADMIN, UserType::COORDINATOR]),
+            Response::HTTP_FORBIDDEN,
+            'Você não é um usuário Administrador'
+        );
+
         return $next($request);
     }
 }

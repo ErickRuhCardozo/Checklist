@@ -6,45 +6,12 @@
     <title>Ministério Melhor Viver</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
-    <style>
-        :root {
-            --bs-body-color: white !important;
-        }
-
-        .actions {
-            position: fixed;
-            bottom: 0;
-            right: 260px;
-            padding: 1em;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5em;
-        }
-
-        .table {
-            table-layout: fixed;
-            white-space: nowrap;
-        }
-
-        .table-hover tbody td {
-            cursor: pointer;
-        }
-
-        @media (max-width: 576px) {
-            .actions {
-                right: 0;
-            }
-
-            .table {
-                table-layout: auto;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link rel="manifest" href="/checklist/manifest.json" />
     @stack('styles')
-    @stack('scripts')
   </head>
   <body>
     <header class="position-sticky top-0 bg-primary d-flex align-items-center justify-content-between w-100 px-2 py-1 mb-2" style="z-index: 100;">
@@ -71,6 +38,8 @@
             </div>
         </div>
     </div>
+
+    @stack('scripts')
   </body>
 </html>
 
