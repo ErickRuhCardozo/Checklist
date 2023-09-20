@@ -4,7 +4,7 @@
 @endpush
 
 <x-slot name="rightHeaderSection">
-    <button class="btn d-md-none p-0 fs-5 ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
+    <button class="btn d-md-none p-0 fs-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
         <i class="bi bi-list"></i>
     </button>
 </x-slot>

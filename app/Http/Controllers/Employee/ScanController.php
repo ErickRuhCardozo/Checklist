@@ -28,7 +28,7 @@ class ScanController extends Controller
             $qrcode = $request->get('qrcode');
             $user = Auth::user();
 
-            if (!$this->isValidPlace($qrcode, $user->id, $error))
+            if (!$this->isValidPlace($qrcode, $user->unity_id, $place, $error))
                 return Redirect::back()->withErrors(['error' => $error]);
 
             if ($this->isPlaceAlreadyScanned($place, $user->current_checklist_id, $scan))
@@ -131,7 +131,7 @@ class ScanController extends Controller
      * @return bool true if a Place with $qrcode was found and it belongs to the same Unity as the User's.
      *              false otherwise.
      */
-    private function isValidPlace(string $qrcode, int $unityId, string &$error): bool
+    private function isValidPlace(string $qrcode, int $unityId, ?Place &$place, ?string &$error): bool
     {
         $success = false;
         $place = Place::where('qrcode', $qrcode)->first();
@@ -156,7 +156,7 @@ class ScanController extends Controller
      * @param Scan $scan Will be set to the Scan made in Place if Place was already scanned.
      * @return bool true if $place was already scanned, false otherwise.
      */
-    private function isPlaceAlreadyScanned(Place $place, int $checklistId, Scan &$scan): bool
+    private function isPlaceAlreadyScanned(Place $place, int $checklistId, ?Scan &$scan): bool
     {
         $scanCount = Scan::where('checklist_id', $checklistId)
                          ->where('place_id', $place->id)
