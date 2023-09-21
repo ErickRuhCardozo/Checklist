@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('/unities', UnityController::class);
         Route::resource('/users', UserController::class);
         Route::resource('/places', PlaceController::class);
+        Route::get('/tasks/batch/create', [TaskController::class, 'batchCreate'])->name('tasks.batch-create');
+        Route::post('/tasks/batch/store', [TaskController::class, 'batchStore'])->name('tasks.batch-store');
         Route::resource('/tasks', TaskController::class);
         Route::resource('/checklists', AdminChecklistController::class);
         Route::resource('/scans', AdminScanController::class);

@@ -15,6 +15,7 @@
         :readonly="true" />
 
     <x-input-field
+        class="mb-2"
         label="Ambiente"
         icon="geo-alt-fill"
         value="{{ $task->place->name}} ({{ $task->place->unity->name }})"

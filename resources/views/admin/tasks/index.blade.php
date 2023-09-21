@@ -28,5 +28,7 @@
             <i class="bi bi-plus-lg align-middle fs-5"></i>
         </a>
     </div>
+
+    {{ $tasks->links() }}
 </x-app>
 

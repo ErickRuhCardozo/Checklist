@@ -9,7 +9,7 @@ use App\Models\Unity;
 use App\Models\UserType;
 use App\Models\WorkPeriod;
 use Illuminate\Database\UniqueConstraintViolationException;
-use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -109,6 +109,38 @@ class TaskController extends Controller
 
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
+
+        return Redirect::route('admin.tasks.index');
+    }
+
+    public function batchCreate()
+    {
+        return View::make('admin.tasks.batch.create', [
+            'periodOptions' => WorkPeriod::options(),
+            'unities' => Unity::all(),
+        ]);
+    }
+
+    public function batchStore(Request $request)
+    {
+        $data = $request->validate([
+            'places' => ['required', 'array'],
+            'titles' => ['required', 'array'],
+            'periods' => ['required', 'array'],
+        ]);
+
+        foreach ($data['places'] as $placeId) {
+            for ($i = 0; $i < count($data['titles']); $i++) {
+                $title = $data['titles'][$i];
+                $period = $data['periods'][$i];
+
+                Task::create([
+                    'place_id' => $placeId,
+                    'title' => $title,
+                    'period' => $period
+                ]);
+            }
+        }
 
         return Redirect::route('admin.tasks.index');
     }

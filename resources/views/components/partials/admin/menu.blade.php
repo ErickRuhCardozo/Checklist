@@ -80,6 +80,10 @@
                         <i class="bi bi-clipboard-plus-fill fs-5 me-1"></i>
                         <span>Cadastrar Tarefa</span>
                     </a>
+                    <a href="{{ route('admin.tasks.batch-create') }}" @if ($selected == 'tasks.batch-create') style="background: var(--bs-blue);" @endif>
+                        <span class="material-symbols-outlined fs-3 me- align-text-bottom" style="margin-left: -0.2rem;">batch_prediction</span>
+                        <span>Cadastrar Em Massa</span>
+                    </a>
                 </ul>
             </li>
             <li>
