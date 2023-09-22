@@ -3,7 +3,7 @@
     @if ($tasks->isEmpty())
         <p class="lead text-center">Nenhuma Tarefa Cadastrada</p>
     @else
-        <div class="table-responsive">
+        <div class="table-responsive mb-2">
             <table class="table table-hover">
                 <thead class="fw-bold">
                     <th>@sortablelink('title', 'Título')</th>

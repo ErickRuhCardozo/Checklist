@@ -115,7 +115,7 @@ class TaskController extends Controller
 
     public function batchCreate()
     {
-        return View::make('admin.tasks.batch.create', [
+        return View::make('admin.tasks.batch-create', [
             'periodOptions' => WorkPeriod::options(),
             'unities' => Unity::all(),
         ]);

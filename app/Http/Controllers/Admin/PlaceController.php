@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class PlaceController extends Controller
 {
@@ -71,7 +73,7 @@ class PlaceController extends Controller
                     ]);
                 }
             });
-        } catch (UniqueConstraintViolationException $err) {
+        } catch (UniqueConstraintViolationException) {
             return Redirect::back()->withErrors(['name' => 'Já existe um Ambiente com esse nome nesta Unidade'])->withInput();
         }
 
@@ -138,6 +140,49 @@ class PlaceController extends Controller
 
         if (Session::has('back'))
             return Redirect::to(Session::get('back'));
+
+        return Redirect::route('admin.places.index');
+    }
+
+    public function batchCreate()
+    {
+        $userTypeOptions = UserType::options();
+        $userTypeOptions = array_filter(
+        $userTypeOptions,
+            fn($opt) => !in_array(
+                $opt['value'],
+                [UserType::ADMIN->value, UserType::COORDINATOR->value]
+            )
+        );
+
+        return View::make('admin.places.batch-create', [
+            'userTypeOptions' => $userTypeOptions,
+            'unities' => Unity::all(),
+        ]);
+    }
+
+    public function batchStore(HttpRequest $request)
+    {
+        $request->validate([
+            'unities' => ['required', 'array'],
+        ]);
+
+        try {
+            DB::transaction(function() use ($request) {
+                foreach ($request->unities as $unityId) {
+                    for ($i = 0; $i < count($request->places); $i++) {
+                        $name = $request->places[$i];
+                        $place = Place::create(['name' => $name, 'unity_id' => $unityId, 'qrcode' => Str::random()]);
+
+                        foreach ($request['place'.$i.'_users'] as $userType) {
+                            PlaceAllowedUsers::create(['place_id' => $place->id, 'user_type' => $userType]);
+                        }
+                    }
+                }
+            });
+        } catch (\Exception $err) {
+            return Redirect::back()->withErrors(['error' => $err->getMessage()]);
+        }
 
         return Redirect::route('admin.places.index');
     }

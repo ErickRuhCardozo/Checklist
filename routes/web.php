@@ -25,10 +25,15 @@ Route::group(['middleware' => 'auth'], function() {
     ], function() {
         Route::resource('/unities', UnityController::class);
         Route::resource('/users', UserController::class);
+
+        Route::get('/places/batch/create', [PlaceController::class, 'batchCreate'])->name('places.batch-create');
+        Route::post('/places/batch/store', [PlaceController::class, 'batchStore'])->name('places.batch-store');
         Route::resource('/places', PlaceController::class);
+
         Route::get('/tasks/batch/create', [TaskController::class, 'batchCreate'])->name('tasks.batch-create');
         Route::post('/tasks/batch/store', [TaskController::class, 'batchStore'])->name('tasks.batch-store');
         Route::resource('/tasks', TaskController::class);
+
         Route::resource('/checklists', AdminChecklistController::class);
         Route::resource('/scans', AdminScanController::class);
         Route::resource('/settings', AdminSettingsController::class);
