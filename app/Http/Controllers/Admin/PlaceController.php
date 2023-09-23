@@ -20,6 +20,11 @@ use Illuminate\Support\Str;
 
 class PlaceController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Place::class, 'user');
+    }
+
     public function index()
     {
         if (Auth::user()->type === UserType::ADMIN) {
@@ -146,6 +151,7 @@ class PlaceController extends Controller
 
     public function batchCreate()
     {
+        $unities = Unity::all();
         $userTypeOptions = UserType::options();
         $userTypeOptions = array_filter(
         $userTypeOptions,
@@ -157,7 +163,7 @@ class PlaceController extends Controller
 
         return View::make('admin.places.batch-create', [
             'userTypeOptions' => $userTypeOptions,
-            'unities' => Unity::all(),
+            'unities' => $unities,
         ]);
     }
 
@@ -185,5 +191,23 @@ class PlaceController extends Controller
         }
 
         return Redirect::route('admin.places.index');
+    }
+
+    protected function resourceAbilityMap()
+    {
+        return [
+            'show' => 'view',
+            'create' => 'create',
+            'store' => 'create',
+            'edit' => 'update',
+            'update' => 'update',
+            'destroy' => 'delete',
+            'batchCreate'=>'batchCreate'
+        ];
+    }
+
+    protected function resourceMethodsWithoutModels()
+    {
+        return ['index', 'create', 'store','batchCreate'];
     }
 }

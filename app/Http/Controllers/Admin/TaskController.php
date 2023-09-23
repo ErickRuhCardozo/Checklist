@@ -115,9 +115,16 @@ class TaskController extends Controller
 
     public function batchCreate()
     {
+        $user = Auth::user();
+
+        if ($user->type === UserType::ADMIN)
+            $unities = Unity::all();
+        else if ($user->type === UserType::COORDINATOR)
+            $unities = Unity::where('id', $user->unity_id)->get();
+
         return View::make('admin.tasks.batch-create', [
             'periodOptions' => WorkPeriod::options(),
-            'unities' => Unity::all(),
+            'unities' => $unities,
         ]);
     }
 

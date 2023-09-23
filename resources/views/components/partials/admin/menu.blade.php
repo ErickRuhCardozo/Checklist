@@ -64,10 +64,12 @@
                         <span class="material-symbols-outlined">add_location</span>
                         <span>Cadastrar Ambiente</span>
                     </a>
-                    <a href="{{ route('admin.places.batch-create') }}" @if ($selected == 'places.batch-create') style="background: var(--bs-blue);" @endif>
-                        <span class="material-symbols-outlined fs-3 me- align-text-bottom" style="margin-left: -0.2rem;">batch_prediction</span>
-                        <span>Cadastrar Em Massa</span>
-                    </a>
+                    @can('batchCreate', \App\Models\Place::class)
+                        <a href="{{ route('admin.places.batch-create') }}" @if ($selected == 'places.batch-create') style="background: var(--bs-blue);" @endif>
+                            <span class="material-symbols-outlined fs-3 me- align-text-bottom" style="margin-left: -0.2rem;">batch_prediction</span>
+                            <span>Cadastrar Em Massa</span>
+                        </a>
+                    @endcan
                 </ul>
             </li>
             <li>

@@ -4,7 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\Place;
 use App\Models\Unity;
+use App\Policies\PlacePolicy;
 use App\Policies\UnityPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Unity::class => UnityPolicy::class,
+        Place::class => PlacePolicy::class,
     ];
 
     /**
