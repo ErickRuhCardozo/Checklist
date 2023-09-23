@@ -48,6 +48,9 @@
         const loadingScreen = document.getElementById('loadingScreen');
         document.querySelectorAll('a, input[type=submit]').forEach(e => {
             e.addEventListener('click', () => {
+                if (e instanceof HTMLInputElement && !e.form.checkValidity())
+                    return;
+
                 loadingScreen.classList.remove('d-none');
                 loadingScreen.animate({ opacity: [0, 0.9] }, { duration: 500, fill: 'forwards' });
             });
