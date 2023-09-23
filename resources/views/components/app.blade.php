@@ -39,7 +39,20 @@
         </div>
     </div>
 
+    <div id="loadingScreen" class="d-none position-absolute top-0 start-0 w-100 h-100 bg-dark d-flex align-items-center justify-content-center" style="z-index: 999; opacity: 0;">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+    </div>
+
     @stack('scripts')
+    <script>
+        const loadingScreen = document.getElementById('loadingScreen');
+        document.querySelectorAll('a, input[type=submit]').forEach(e => {
+            e.addEventListener('click', () => {
+                loadingScreen.classList.remove('d-none');
+                loadingScreen.animate({ opacity: [0, 0.9] }, { duration: 500, fill: 'forwards' });
+            });
+        });
+    </script>
   </body>
 </html>
 
