@@ -19,56 +19,56 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'name' => 'Marcel De Geus',
-                'password' => 'DeGeus13',
+                'password' => env('MARCEL_DE_GEUS_PASSWORD'),
                 'type' => UserType::ADMIN,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Carlos Alexandre',
-                'password' => 'carlinhos',
+                'password' => env('CARLOS_ALEXANDRE_PASSWORD'),
                 'type' => UserType::CAREGIVER,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Jonathan Marques',
-                'password' => 'marques',
+                'password' => env('JONATHAN_MARQUES_PASSWORD'),
                 'type' => UserType::CAREGIVER,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Jonathan Pinheiro',
-                'password' => 'pinheiro',
+                'password' => env('JONATHAN_PINHEIRO_PASSWORD'),
                 'type' => UserType::CAREGIVER,
                 'work_period' => WorkPeriod::NOCTURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Josenei Trappel',
-                'password' => 'trappel',
+                'password' => env('JOSENEI_TRAPPEL_PASSWORD'),
                 'type' => UserType::CAREGIVER,
                 'work_period' => WorkPeriod::NOCTURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Aurenito Antônio',
-                'password' => 'aurenito',
+                'password' => env('AURENITO_ANTONIO_PASSWORD'),
                 'type' => UserType::CHEF,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Lucas Silva',
-                'password' => 'lucas',
+                'password' => env('LUCAS_SILVA_PASSWORD'),
                 'type' => UserType::CHEF,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
             ],
             [
                 'name' => 'Alisson Moura',
-                'password' => 'purungo',
+                'password' => env('ALISSON_MOURA_PASSWORD'),
                 'type' => UserType::BAKER,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
