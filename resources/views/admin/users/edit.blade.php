@@ -52,17 +52,5 @@
 
         <input class="btn btn-success w-100 mt-4" type="submit" value="Atualizar">
     </form>
-
-
-    <div class="actions">
-        <a class="btn btn-primary rounded-circle p-1" href="{{ route('admin.users.edit', $user->id) }}" style="width: 42px; height: 42px;">
-            <i class="bi bi-pencil-fill align-middle fs-5"></i>
-        </a>
-        <a class="btn btn-danger rounded-circle p-1" href="javascript:showDeleteDialog()" style="width: 42px; height: 42px;">
-            <i class="bi bi-trash-fill align-middle fs-5"></i>
-        </a>
-    </div>
-
-    <x-delete-dialog title="Excluir Usuário" message="Deseja excluir esse Usuário?" :route="route('admin.users.destroy', $user->id)"/>
 </x-app>
 
