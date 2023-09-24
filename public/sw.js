@@ -7,6 +7,11 @@ const CACHE = "pwabuilder-page";
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "./offline.html";
 
+workbox.routing.registerRoute(
+  new RegExp('/*'),
+  new workbox.strategies.NetworkFirst()
+);
+
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
