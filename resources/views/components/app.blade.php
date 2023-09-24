@@ -46,7 +46,7 @@
     @stack('scripts')
     <script>
         const loadingScreen = document.getElementById('loadingScreen');
-        document.querySelectorAll('a, input[type=submit]').forEach(e => {
+        document.querySelectorAll('a[href*=http], input[type=submit], [onclick*=location]').forEach(e => {
             e.addEventListener('click', () => {
                 if (e instanceof HTMLInputElement && !e.form.checkValidity())
                     return;
