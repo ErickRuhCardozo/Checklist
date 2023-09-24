@@ -176,7 +176,7 @@ class PlaceController extends Controller
         try {
             DB::transaction(function() use ($request) {
                 foreach ($request->unities as $unityId) {
-                    for ($i = 0; $i < count($request->places); $i++) {
+                    for ($i = 0; $i < count($request->places ?? []); $i++) {
                         $name = $request->places[$i];
                         $place = Place::create(['name' => $name, 'unity_id' => $unityId, 'qrcode' => Str::random()]);
 

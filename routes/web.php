@@ -51,3 +51,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
 });
 
+Route::get('/update', function() {
+    echo shell_exec('pwd');
+});
+
