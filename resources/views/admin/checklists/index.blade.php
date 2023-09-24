@@ -1,12 +1,5 @@
 <x-app title="Checklists">
-     <x-slot name="leftHeaderSection">
-        <a class="btn btn-sm btn-danger" href="{{ route('logout') }}">
-            <i class="bi bi-arrow-bar-left me-1"></i>
-            <span>Sair</span>
-        </a>
-    </x-slot>
-
-   <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'checklists.index']) </x-slot>
+     <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'checklists.index']) </x-slot>
 
     @if ($checklists->isEmpty())
         <p class="lead text-center">Nenhum Checklist Feito Ainda</p>
