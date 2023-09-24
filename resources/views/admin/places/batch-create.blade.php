@@ -55,6 +55,12 @@
         </a>
     </div>
 
+    @if ($errors->has('error'))
+        <div class="alert alert-danger mt-2 mb-2" role="alert">
+            {{ $errors->get('error')[0] }}
+        </div>
+    @endif
+
     <script>
         const placeItemTemplate = document.getElementById('placeItemTemplate');
         const placesList = document.getElementById('placesList');
