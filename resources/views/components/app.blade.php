@@ -45,6 +45,25 @@
 
     @stack('scripts')
     <script>
+        if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) {
+            var backNavigationFlag = sessionStorage.getItem('backNavigationFlag');
+
+            if (!backNavigationFlag) {
+                sessionStorage.setItem('backNavigationFlag', 'true');
+                location.reload();
+            } else {
+                sessionStorage.removeItem('backNavigationFlag');
+            }
+        }
+
+        window.addEventListener('pageshow', function(event) {
+            var backNavigationFlag = sessionStorage.getItem('backNavigationFlag');
+
+            if (backNavigationFlag) {
+                sessionStorage.removeItem('backNavigationFlag');
+            }
+        });
+
         const loadingScreen = document.getElementById('loadingScreen');
         document.querySelectorAll('a[href*=http], input[type=submit], [onclick*=location]').forEach(e => {
             e.addEventListener('click', () => {
@@ -53,7 +72,6 @@
 
                 loadingScreen.classList.remove('d-none');
                 loadingScreen.animate({ opacity: [0, 0.9] }, { duration: 500, fill: 'forwards' });
-                setTimeout(() => loadingScreen.classList.add('d-none'), 3500);
             });
         });
 

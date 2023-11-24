@@ -1,5 +1,5 @@
 <x-app title="Configurações" :back="route('admin.checklists.index')">
-    <x-slot name="rightBodySection"> @include('components.partials.employee.menu', ['selected' => 'settings.index']) </x-slot>
+    <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'settings.index']) </x-slot>
 
     <form action="{{ route('admin.settings.update', $user->id) }}" method="post">
         @csrf
