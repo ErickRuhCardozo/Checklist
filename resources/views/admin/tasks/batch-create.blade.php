@@ -36,7 +36,7 @@
         <h5>Selecione os Ambientes em que deseja adicionar as Tarefas:</h5>
         <div class="card position-relative" style="max-width: 100%; overflow: hidden;">
             <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs flex-nowrap align-items-end text-nowrap" style="overflow-x: auto; overflow-y: hidden;" id="myTab" role="tablist">
+                <ul class="nav nav-tabs card-header-tabs flex-nowrap align-items-end justify-content-md-center justify-content-start text-nowrap" style="overflow-x: auto; overflow-y: hidden;" id="myTab" role="tablist">
                     @foreach ($unities as $unity)
                         <li class="nav-item" role="presentation">
                             <button

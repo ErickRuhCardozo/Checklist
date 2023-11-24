@@ -53,8 +53,11 @@
 
                 loadingScreen.classList.remove('d-none');
                 loadingScreen.animate({ opacity: [0, 0.9] }, { duration: 500, fill: 'forwards' });
+                setTimeout(() => loadingScreen.classList.add('d-none'), 3500);
             });
         });
+
+        window.onbeforeunload = function () { }
     </script>
   </body>
 </html>

@@ -116,6 +116,8 @@
                     </a>
                 </ul>
             </li>
+
+            <a href="{{ route('logout') }}" class="btn btn-sm btn-danger w-100 mt-2">Sair</a>
         </ul>
      </div>
 </div>

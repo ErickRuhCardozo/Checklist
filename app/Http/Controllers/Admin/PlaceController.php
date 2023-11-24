@@ -22,7 +22,7 @@ class PlaceController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Place::class, 'user');
+        $this->authorizeResource(Place::class);
     }
 
     public function index()
@@ -151,10 +151,16 @@ class PlaceController extends Controller
 
     public function batchCreate()
     {
-        $unities = Unity::all();
+        $user = Auth::user();
+
+        if ($user->type === UserType::ADMIN)
+            $unities = Unity::all();
+        else if ($user->type === UserType::COORDINATOR)
+            $unities = Unity::where('id', $user->unity_id)->get();
+
         $userTypeOptions = UserType::options();
         $userTypeOptions = array_filter(
-        $userTypeOptions,
+            $userTypeOptions,
             fn($opt) => !in_array(
                 $opt['value'],
                 [UserType::ADMIN->value, UserType::COORDINATOR->value]

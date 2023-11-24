@@ -14,6 +14,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -75,7 +76,7 @@ class UserController extends Controller
     public function show(Request $request, User $user)
     {
         if ($request->has('back'))
-            Session::flash('back', Request::get('back'));
+            Session::flash('back', FacadesRequest::get('back'));
 
         return View::make('admin.users.show', [
             'user' => $user,

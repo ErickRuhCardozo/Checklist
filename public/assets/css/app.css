@@ -22,7 +22,14 @@ body {
 
 .actions a i.bi,
 .actions span.material-symbols-outlined {
-    line-height: 1.8rem;
+    line-height: 2rem;
+}
+
+@media (max-width: 575.98px) {
+    .actions a i.bi,
+    .actions span.material-symbols-outlined {
+        line-height: 1.8rem;
+    }
 }
 
 .table {

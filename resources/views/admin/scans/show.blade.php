@@ -34,7 +34,7 @@
                 <label class="form-check-label">{{ $task->title }}</label>
             </li>
         @empty
-            <li class="text-center">Esse Ambiente Não Possuí Tarefas</li>
+            <li class="list-group-item text-nobreak text-center">Esse Ambiente Não Possuí Tarefas</li>
         @endforelse
     </ul>
 </x-app>

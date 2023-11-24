@@ -14,20 +14,11 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $carvalho = Unity::where('name', 'Jardim Carvalho')->first();
-        $ibirapuera = Unity::where('name', 'Jardim Ibirapuera')->first();
-        $comunidade = Unity::where('name', 'Comunidade Terapêutica')->first();
         $users = [
             [
                 'name' => 'Marcel De Geus',
                 'password' => env('MARCEL_DE_GEUS_PASSWORD'),
                 'type' => UserType::ADMIN,
-                'work_period' => WorkPeriod::DIURNAL,
-                'unity_id' => $carvalho->id
-            ],
-            [
-                'name' => 'Carlos Alexandre',
-                'password' => env('CARLOS_ALEXANDRE_PASSWORD'),
-                'type' => UserType::CAREGIVER,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id
             ],
@@ -67,8 +58,8 @@ class UserSeeder extends Seeder
                 'unity_id' => $carvalho->id
             ],
             [
-                'name' => 'Alisson Moura',
-                'password' => env('ALISSON_MOURA_PASSWORD'),
+                'name' => 'Andrey Berenda',
+                'password' => env('ANDREY_BERENDA_PASSWORD'),
                 'type' => UserType::BAKER,
                 'work_period' => WorkPeriod::DIURNAL,
                 'unity_id' => $carvalho->id

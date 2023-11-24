@@ -43,7 +43,7 @@
         </div>
 
         <h5 class="mt-3 text-center">Informe os Ambientes que deseja cadastrar</h5>
-        <div id="placesList" class="d-flex flex-column gap-1" style="max-height: 50vh; overflow-y: auto;">
+        <div id="placesList" class="d-flex flex-column gap-1" style="height: 45vh; overflow-y: auto;">
         </div>
 
         <input class="btn btn-success w-100 mt-4" type="submit" value="Cadastrar Em Massa">

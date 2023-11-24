@@ -1,4 +1,4 @@
-<x-app title="Editar Checage" :back="route('employee.scans.show', $scan->id)">
+<x-app title="Editar Checagem" :back="route('employee.scans.show', $scan->id)">
     <x-slot name="rightBodySection"> @include('components.partials.employee.menu', ['selected' => 'scans.create']) </x-slot>
 
     <form action="{{ route('employee.scans.update', $scan->id) }}" method="post">
@@ -38,9 +38,9 @@
             <h5 class="mt-4 mb-2">Tarefas:</h5>
             <ul class="list-group">
                 @foreach ($tasks as $task)
-                    <li class="list-group-item text-nobreak" style="overflow-x: auto;">
-                        <input class="form-check-input me-1" type="checkbox" name="tasks[]" value="{{ $task->id }}" id="task{{ $task->id }}" @if (in_array($task->id, $tasksDone)) checked @endif>
-                        <label class="form-check-label" for="task{{ $task->id }}">{{ $task->title }}</label>
+                    <li class="list-group-item text-nobreak d-flex" style="overflow-x: auto;">
+                        <input class="form-check-input me-2 text-truncate" type="checkbox" name="tasks[]" value="{{ $task->id }}" id="task{{ $task->id }}" @if (in_array($task->id, $tasksDone)) checked @endif>
+                        <label class="form-check-label flex-grow-1" for="task{{ $task->id }}">{{ $task->title }}</label>
                     </li>
                 @endforeach
             </ul>

@@ -71,6 +71,6 @@ class PlacePolicy
 
     public function batchCreate(User $user)
     {
-        return $user->type === UserType::ADMIN;
+        return $user->type === UserType::ADMIN || $user->type === UserType::COORDINATOR;
     }
 }
