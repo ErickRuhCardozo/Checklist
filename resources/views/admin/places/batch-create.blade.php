@@ -89,6 +89,7 @@
 
             placeCount++;
             placesList.appendChild(item);
+            item.querySelector('input').focus();
         }
     </script>
 </x-app>

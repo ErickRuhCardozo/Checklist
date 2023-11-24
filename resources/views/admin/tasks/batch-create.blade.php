@@ -102,6 +102,7 @@
         function addTaskItem() {
             const item = taskItemTemplate.content.firstElementChild.cloneNode(true);
             taskList.appendChild(item);
+            item.querySelector('input').focus();
         }
 
         function toggleChecks(div, state) {

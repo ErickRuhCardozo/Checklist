@@ -28,7 +28,10 @@ class TaskController extends Controller
                            ->select('tasks.*');
 
         return View::make('admin.tasks.index', [
-            'tasks' => $tasks->simplePaginate(10)
+            'tasks' => $tasks->orderBy('place_id')
+                             ->orderBy('title')
+                             ->orderBy('period')
+                             ->simplePaginate(10)
         ]);
     }
 
@@ -141,11 +144,14 @@ class TaskController extends Controller
                 $title = $data['titles'][$i];
                 $period = $data['periods'][$i];
 
-                Task::create([
-                    'place_id' => $placeId,
-                    'title' => $title,
-                    'period' => $period
-                ]);
+                try {
+                    Task::create([
+                        'place_id' => $placeId,
+                        'title' => $title,
+                        'period' => $period
+                    ]);
+                } catch (\Exception) {
+                }
             }
         }
 

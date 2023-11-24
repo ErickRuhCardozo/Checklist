@@ -35,7 +35,9 @@ class PlaceController extends Controller
         }
 
         return View::make('admin.places.index', [
-            'places' => $places->simplePaginate(10),
+            'places' => $places->orderBy('unity_id')
+                               ->orderBy('name')
+                               ->simplePaginate(10),
         ]);
     }
 
@@ -179,21 +181,20 @@ class PlaceController extends Controller
             'unities' => ['required', 'array'],
         ]);
 
-        try {
-            DB::transaction(function() use ($request) {
-                foreach ($request->unities as $unityId) {
-                    for ($i = 0; $i < count($request->places ?? []); $i++) {
-                        $name = $request->places[$i];
-                        $place = Place::create(['name' => $name, 'unity_id' => $unityId, 'qrcode' => Str::random()]);
+        foreach ($request->unities as $unityId) {
+            for ($i = 0; $i < count($request->places ?? []); $i++) {
+                $name = $request->places[$i];
 
-                        foreach ($request['place'.$i.'_users'] as $userType) {
+                try {
+                    $place = Place::create(['name' => $name, 'unity_id' => $unityId, 'qrcode' => Str::random()]);
+
+                    foreach ($request['place' . $i . '_users'] as $userType) {
+                        try {
                             PlaceAllowedUsers::create(['place_id' => $place->id, 'user_type' => $userType]);
-                        }
+                        } catch (\Exception) { }
                     }
-                }
-            });
-        } catch (\Exception $err) {
-            return Redirect::back()->withErrors(['error' => $err->getMessage()]);
+                } catch(\Exception) { }
+            }
         }
 
         return Redirect::route('admin.places.index');

@@ -20,7 +20,8 @@ class ChecklistController extends Controller
                                    ->where('users.unity_id', Auth::user()->unity_id);
 
         return View::make('admin.checklists.index', [
-            'checklists' => $checklists->orderBy('created_at', 'desc')->simplePaginate(10)
+            'checklists' => $checklists->orderBy('created_at', 'desc')
+                                       ->simplePaginate(10)
         ]);
     }
 

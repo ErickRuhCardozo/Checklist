@@ -29,7 +29,7 @@ class UserController extends Controller
         }
 
         return View::make('admin.users.index', [
-            'users' => $users->simplePaginate(10),
+            'users' => $users->orderBy('unity_id')->orderBy('type')->simplePaginate(10),
         ]);
     }
 
