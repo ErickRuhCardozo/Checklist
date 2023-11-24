@@ -51,8 +51,3 @@ Route::group(['middleware' => 'auth'], function() {
     });
 });
 
-Route::get('/update', function() {
-    shell_exec('cd .. && git pull');
-    return redirect()->route('login');
-});
-
