@@ -67,7 +67,7 @@
                                 </div>
                             @endif
                             <ul class="list-group list-group-flush" style="max-height: 20vh; overflow-x: auto;">
-                                @forelse ($unity->places as $place)
+                                @forelse ($unity->places->sortBy('name') as $place)
                                     <li class="list-group-item">
                                         <input class="form-check-input me-1" type="checkbox" name="places[]" value="{{ $place->id }}" id="place{{ $place->id }}Checkbox">
                                         <label class="form-check-label" for="place{{ $place->id }}Checkbox">{{ $place->name }}</label>
