@@ -60,12 +60,6 @@
                             id="unity{{ $unity->id }}-tab-pane"
                             role="tabpanel"
                             tabindex="0">
-                            @if ($unity->places()->count() > 0)
-                                <div class="ms-3 mt-2">
-                                    <input class="form-check-input me-1" type="checkbox" id="select{{ $unity->id }}All" onchange="toggleChecks(this.parentElement, this.checked)">
-                                    <label class="form-check-label" for="select{{ $unity->id }}All">Selecionar Todos</label>
-                                </div>
-                            @endif
                             <ul class="list-group list-group-flush" style="max-height: 20vh; overflow-x: auto;">
                                 @forelse ($unity->places->sortBy('name') as $place)
                                     <li class="list-group-item">
@@ -103,14 +97,6 @@
             const item = taskItemTemplate.content.firstElementChild.cloneNode(true);
             taskList.appendChild(item);
             item.querySelector('input').focus();
-        }
-
-        function toggleChecks(div, state) {
-            const parent = div.parentElement;
-            parent.querySelectorAll('input[type=checkbox]').forEach((input, index) => {
-                if (index === 0) return true;
-                input.checked = state;
-            });
         }
     </script>
 </x-app>

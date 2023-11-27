@@ -11,6 +11,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="manifest" href="/checklist/manifest.json" />
+    <script>
+        if (navigation.canGoForward) {
+            if (sessionStorage.getItem('reloadFlag') === null) {
+                sessionStorage.setItem('reloadFlag', '1');
+                navigation.reload();
+            } else {
+                sessionStorage.removeItem('reloadFlag');
+            }
+        }
+    </script>
     @stack('styles')
   </head>
   <body>
@@ -72,6 +82,7 @@
 
                 loadingScreen.classList.remove('d-none');
                 loadingScreen.animate({ opacity: [0, 0.9] }, { duration: 500, fill: 'forwards' });
+                setTimeout(() => loadingScreen.classList.add('d-none'), 4E3);
             });
         });
 

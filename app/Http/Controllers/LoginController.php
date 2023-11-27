@@ -20,8 +20,7 @@ class LoginController extends Controller
             return $this->redirectUser(Auth::user());
 
         return View::make('login.index', [
-            'userOptions' => User::options(),
-            'unities' => Unity::all(),
+            'unities' => Unity::options(),
         ]);
     }
 

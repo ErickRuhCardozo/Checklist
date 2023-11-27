@@ -1,5 +1,5 @@
 <x-app title="Cadastrar Em Massa">
-    <x-slot name="rightBodySection"> @include('components.partials.admin.menu', ['selected' => 'places.batch-create']) </x-slot>
+    <x-slot name="rightBodySection"> @include ('components.partials.admin.menu', ['selected' => 'places.batch-create']) </x-slot>
 
     <template id="placeItemTemplate">
         <div class="input-group">
