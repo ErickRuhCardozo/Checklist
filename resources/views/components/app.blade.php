@@ -82,7 +82,7 @@
 
                 loadingScreen.classList.remove('d-none');
                 loadingScreen.animate({ opacity: [0, 0.9] }, { duration: 500, fill: 'forwards' });
-                setTimeout(() => loadingScreen.classList.add('d-none'), 4E3);
+                setTimeout(() => loadingScreen.classList.add('d-none'), 8E3);
             });
         });
 
