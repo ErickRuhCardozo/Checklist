@@ -50,6 +50,27 @@ body {
     cursor: pointer;
 }
 
+.hoverable-card {
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+}
+
+.hoverable-card:hover {
+    background: var(--bs-gray-800);
+    box-shadow: 0 0 8px 2.5px rgb(7, 126, 230);
+}
+
+.hoverable-card:active {
+    background: var(--bs-gray-700) !important;
+}
+
+@media (max-width: 578px) {
+    #unitiesContainer { gap: 2rem !important; }
+    .hoverable-card { width: 8rem !important; }
+    .hoverable-card .hoverable-card-icon-lg { font-size: 4rem !important; }
+    .hoverable-card .hoverable-card-title { font-size: 1.25rem !important; }
+}
+
 @media (max-width: 575.98px) {
     .actions {
         right: 0;

@@ -1,27 +1,3 @@
-@push('styles')
-    <style>
-        #unitiesContainer .card {
-            transition: all 200ms ease-in-out;
-            cursor: pointer;
-        }
-
-        #unitiesContainer .card:hover {
-            background: var(--bs-gray-800);
-            box-shadow: 0 0 8px 2.5px rgb(7, 126, 230);
-        }
-
-        #unitiesContainer .card:active {
-            background: var(--bs-gray-700) !important;
-        }
-
-        @media (max-width: 578px) {
-            #unitiesContainer { gap: 2rem !important; }
-            #unitiesContainer .card { width: 8rem !important; }
-            #unitiesContainer .card i { font-size: 4rem !important; }
-            #unitiesContainer .card h5 { font-size: 1.25rem !important; }
-        }
-    </style>
-@endpush
 <x-app title="Checklist Melhor Viver">
     @if ($errors->count() > 0)
         <div class="position-relative mt-4 mb-0 start-50 translate-middle toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -36,12 +12,12 @@
         <h3 class="text-center mb-3">Selecione Sua Unidade:</h3>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
             @foreach ($unities as $unity)
-                    <div class="card" style="width: 12rem;" data-unity-id="{{ $unity['value'] }}" onclick="onUnitySelected(this)">
+                <div class="card hoverable-card" style="width: 12rem;" data-unity-id="{{ $unity['value'] }}" onclick="onUnitySelected(this)">
                     <div class="card-img-top text-center">
-                        <i class="bi bi-buildings-fill" style="font-size: 6rem;"></i>
+                        <i class="bi bi-buildings-fill hoverable-card-icon-lg" style="font-size: 6rem;"></i>
                     </div>
                     <div class="card-body d-flex align-items-center justify-content-center">
-                        <h5 class="m-0 text-center">{{ $unity['label'] }}</h5>
+                        <h5 class="m-0 text-center hoverable-card-title">{{ $unity['label'] }}</h5>
                     </div>
                 </div>
             @endforeach

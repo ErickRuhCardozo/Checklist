@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
@@ -21,22 +22,23 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::sortable();
+        $users = User::sortable()->where('id', '!=', Auth::id());
 
         if (Auth::user()->type == UserType::COORDINATOR) {
-            $users = $users->where('unity_id', Auth::user()->unity_id)
-                           ->where('id', '!=', Auth::id());
+            $users = $users->where('unity_id', Auth::user()->unity_id);
         }
 
         return View::make('admin.users.index', [
-            'users' => $users->orderBy('unity_id')->orderBy('type')->simplePaginate(10),
+            'users' => $users->orderBy('unity_id')
+                             ->orderBy('type')
+                             ->simplePaginate(10),
         ]);
     }
 
     public function create(Request $request)
     {
         if ($request->has('back'))
-            Session::flash('back', Request::get('back'));
+            Session::flash('back', ClientRequest::get('back'));
 
         $unityOptions = Unity::options();
         $userTypeOptions = UserType::options();
